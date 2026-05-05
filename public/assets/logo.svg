@@ -1,0 +1,18 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="momentum_gradient" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="280" fill="url(#momentum_gradient)"/>
+  
+  <!-- Momentum Hex Geometry -->
+  <g transform="translate(512, 512)">
+    <!-- Left Half -->
+    <path d="M-220 -380 V380 L0 500 V-500 L-220 -380Z" fill="white" fill-opacity="0.2" transform="translate(-20, 0)"/>
+    
+    <!-- Right Half (Shifted Up) -->
+    <path d="M220 -380 V380 L0 500 V-500 L220 -380Z" fill="white" transform="translate(20, -80)"/>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: subscribers
+    // Document ID: auto-generated
+    // Fields:
+    //   - email: string (required, email format)
+    //   - name: string (required, min 1, max 100)
+    //   - joinedAt: timestamp (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          request.auth.token.email == "pro679715@gmail.com");
+    }
+
+    function isValidEmail(email) {
+      return email is string &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidSubscriber(data) {
+      return data.keys().hasAll(['email', 'name', 'joinedAt']) &&
+             data.keys().hasOnly(['email', 'name', 'joinedAt']) &&
+             isValidEmail(data.email) &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.joinedAt is timestamp;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /subscribers/{subscriberId} {
+      // Allow anyone to join (create)
+      allow create: if isValidSubscriber(request.resource.data);
+      
+      // Only admin can read the list
+      allow read: if isAdmin();
+      
+      // No updates or deletes for now
+      allow update, delete: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}
