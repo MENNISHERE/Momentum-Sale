@@ -31,7 +31,7 @@ export default function AICoach({ aiMessages, isAiLoading, aiInput, setAiInput, 
               className="mb-8 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs leading-relaxed"
             >
               <p className="font-bold mb-1">⚠️ API Key Missing</p>
-              <p>To enable the AI Coach, please add your Gemini API Key in the <b>Settings</b> (gear icon) &rarr; <b>Secrets</b> section. Set the name to <code>VITE_GEMINI_API_KEY</code> and the value to your key.</p>
+              <p>To enable the AI Coach, please add your Gemini API Key in your deployment environment variables (e.g., Netlify Dashboard or local .env). Set the name to <code>VITE_GEMINI_API_KEY</code> or <code>GEMINI_API_KEY</code>.</p>
             </motion.div>
           )}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-6">
