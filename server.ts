@@ -187,8 +187,8 @@ async function startServer() {
   });
 }
 
-// Only start listener if not on Netlify
-if (!process.env.NETLIFY) {
+// Only start listener if not on serverless platforms (Netlify, Vercel)
+if (!process.env.NETLIFY && !process.env.VERCEL) {
   startServer();
 }
 
