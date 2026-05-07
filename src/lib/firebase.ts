@@ -11,8 +11,10 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 // Initialize Firestore with the specific database ID from config
-// We use getFirestore for the simplest reliable connection
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+// We use initializeFirestore to ensure we can specify connection settings
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+}, firebaseConfig.firestoreDatabaseId);
 
 export const googleProvider = new GoogleAuthProvider();
 
