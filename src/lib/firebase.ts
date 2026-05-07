@@ -14,6 +14,7 @@ export const auth = getAuth(app);
 // We use initializeFirestore to ensure we can specify connection settings
 export const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
+  useFetchStreams: false,
 }, firebaseConfig.firestoreDatabaseId);
 
 export const googleProvider = new GoogleAuthProvider();
@@ -22,16 +23,17 @@ export const googleProvider = new GoogleAuthProvider();
 async function testConnection() {
   try {
     console.log("Testing Firestore connection to database:", firebaseConfig.firestoreDatabaseId);
-    // Just try to get a document, even if it doesn't exist
+    // Add a small delay to allow network to stabilize
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Try to get a document from server
     await getDocFromServer(doc(db, 'subscribers', 'test_connection'));
     console.log("Firestore connection verified.");
   } catch (error: any) {
-    // Permission denied is actually a good sign - it means we reached the server but the rules blocked us
     if (error.code === 'permission-denied') {
       console.log("Firestore connection verified (Permission denied as expected).");
       return;
     }
-    console.error("Firestore Connection Test Error:", error.code, error.message);
+    console.warn("Firestore Connection Test (Retry might be needed):", error.code, error.message);
   }
 }
 testConnection();

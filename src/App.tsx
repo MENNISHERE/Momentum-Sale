@@ -74,7 +74,18 @@ function AppContent() {
     localStorage.setItem('momentum_chat', JSON.stringify(aiMessages));
   }, [aiMessages]);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const hasApiKey = !!(process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_MOMENTUM_AI_KEY);
+  const getApiKey = () => {
+    try {
+      return (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || 
+             import.meta.env.VITE_GEMINI_API_KEY || 
+             import.meta.env.VITE_MOMENTUM_AI_KEY || 
+             '';
+    } catch {
+      return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_MOMENTUM_AI_KEY || '';
+    }
+  };
+
+  const hasApiKey = !!getApiKey();
 
   const clearChat = () => {
     setAiMessages([{ role: 'ai', text: "Chat cleared. How can I help you start fresh?" }]);
@@ -148,7 +159,7 @@ function AppContent() {
     setIsAiLoading(true);
 
     try {
-      const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_MOMENTUM_AI_KEY;
+      const apiKey = getApiKey();
       if (!apiKey) {
         throw new Error("API Key is missing. Please check your environment settings.");
       }
@@ -469,16 +480,27 @@ export default function App() {
   useEffect(() => {
     const checkSecrets = async () => {
       // Simulate connection check for web skeleton presentation
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const hasApiKey = !!process.env.GEMINI_API_KEY || !!import.meta.env.VITE_GEMINI_API_KEY || !!import.meta.env.VITE_MOMENTUM_AI_KEY;
-      setSecretsConnected(hasApiKey);
+      const apiKey = (() => {
+        try {
+          return (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || 
+                 import.meta.env.VITE_GEMINI_API_KEY || 
+                 import.meta.env.VITE_MOMENTUM_AI_KEY || 
+                 '';
+        } catch {
+          return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_MOMENTUM_AI_KEY || '';
+        }
+      })();
+      
+      const connected = !!apiKey;
+      setSecretsConnected(connected);
       setIsInitializing(false);
       
-      if (hasApiKey) {
+      if (connected) {
         console.log("API/Secrets 10001% connected successfully. Proceeding with load...");
       } else {
-        console.warn("API Key could not be loaded from environment variables.");
+        console.warn("API Key could not be loaded from environment variables. AI features may be limited.");
       }
     };
     checkSecrets();
@@ -486,42 +508,104 @@ export default function App() {
 
   if (isInitializing) {
     return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center relative overflow-hidden text-[#F5F5F7] font-sans">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="min-h-screen bg-[#050505] flex flex-col items-center justify-center relative overflow-hidden text-[#F5F5F7] font-sans"
+      >
         {/* Dynamic Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden opacity-50">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full animate-pulse"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/10 blur-[150px] rounded-full"></div>
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] bg-blue-600/20 blur-[140px] rounded-full animate-pulse"></div>
+          <div className="absolute bottom-[-20%] right-[-20%] w-[70%] h-[70%] bg-purple-600/20 blur-[180px] rounded-full"></div>
         </div>
 
-        <div className="flex flex-col items-center gap-8 max-w-sm w-full px-6">
-          <div className="relative">
-            <div className="w-20 h-20 border-[3px] border-white/5 rounded-full"></div>
-            <div className="w-20 h-20 border-[3px] border-blue-500 rounded-full border-t-transparent animate-spin absolute inset-0"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-blue-400 animate-pulse" />
-            </div>
+        <div className="flex flex-col items-center gap-12 max-w-md w-full px-8 relative z-10">
+          {/* Animated Brand Mark */}
+          <div className="relative group">
+            <div className="absolute inset-0 bg-blue-500/20 blur-[60px] rounded-full animate-pulse" />
+            <motion.div 
+              animate={{ 
+                rotate: [0, 5, 0],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="w-20 h-20 rounded-[1.75rem] bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center shadow-[0_0_40px_rgba(79,70,229,0.4)] border border-white/20 relative overflow-hidden"
+            >
+              <div className="relative w-10 h-10 flex items-center justify-center">
+                <div 
+                  className="absolute left-0 w-5 h-8 bg-white/30"
+                  style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 75%, 0 25%)' }}
+                />
+                <div 
+                  className="absolute right-0 w-5 h-8 bg-white -translate-y-1 shadow-xl"
+                  style={{ clipPath: 'polygon(0 0, 100% 25%, 100% 75%, 0 100%)' }}
+                />
+              </div>
+            </motion.div>
           </div>
-          
-          <div className="w-full space-y-4">
-            <div className="h-4 bg-white/10 rounded-md w-3/4 mx-auto animate-pulse"></div>
-            <div className="h-3 bg-white/5 rounded-md w-1/2 mx-auto animate-pulse"></div>
-            
-            <div className="mt-8 p-4 bg-white/[0.02] border border-white/5 rounded-2xl">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                <div className="h-3 bg-white/10 rounded max-w-[120px] w-full animate-pulse"></div>
+
+          {/* Connection Intelligence Info */}
+          <div className="w-full space-y-6">
+            <div className="text-center space-y-2">
+              <h2 className="text-xl font-bold tracking-tight text-white mb-1">Momentum Intelligence</h2>
+              <p className="text-[13px] text-white/40 font-medium tracking-wide">Initializing secure framework...</p>
+            </div>
+
+            {/* Skeleton Blocks mimicking web structure */}
+            <div className="space-y-4">
+              {/* Fake Header/Nav Skeleton */}
+              <div className="flex justify-between items-center px-2">
+                <div className="h-2 w-12 bg-white/10 rounded-full animate-pulse" />
+                <div className="flex gap-2">
+                  <div className="h-6 w-6 rounded-lg bg-white/5 animate-pulse" />
+                  <div className="h-6 w-6 rounded-lg bg-white/5 animate-pulse" />
+                </div>
               </div>
-              <div className="space-y-2">
-                <div className="h-2 bg-white/5 rounded w-full animate-pulse"></div>
-                <div className="h-2 bg-white/5 rounded w-5/6 animate-pulse"></div>
+
+              {/* Grid Cards Skeleton */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-3">
+                   <div className="h-1.5 w-8 bg-white/10 rounded-lg animate-pulse" />
+                   <div className="h-8 w-full bg-white/5 rounded-xl animate-pulse" />
+                </div>
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-3">
+                   <div className="h-1.5 w-8 bg-white/10 rounded-lg animate-pulse" />
+                   <div className="h-8 w-full bg-white/5 rounded-xl animate-pulse" />
+                </div>
+              </div>
+
+              {/* Main Interaction Bar Skeleton */}
+              <div className="h-14 w-full bg-white/[0.02] border border-white/10 rounded-[2rem] flex items-center px-6 gap-4">
+                 <div className="w-8 h-8 rounded-xl bg-white/10 animate-pulse" />
+                 <div className="flex-1 h-1.5 bg-white/5 rounded-full animate-pulse" />
+                 <div className="w-12 h-7 rounded-full bg-blue-500/10 animate-pulse" />
               </div>
             </div>
-            <p className="text-[11px] text-center font-black text-white/40 uppercase tracking-[0.25em] mt-4">
-              Establishing Secure Connection...
-            </p>
+
+            {/* Verification Status */}
+            <div className="flex flex-col items-center gap-3 pt-6">
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/30">
+                  Secure Connection 10001% Verified
+                </span>
+              </div>
+              <div className="w-48 h-[1px] bg-white/5 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ x: "-100%" }}
+                  animate={{ x: "100%" }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="w-1/2 h-full bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
