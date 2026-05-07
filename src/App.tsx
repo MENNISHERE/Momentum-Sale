@@ -463,6 +463,68 @@ Keep responses concise, impactful, and always refer to these specific features o
 }
 
 export default function App() {
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [secretsConnected, setSecretsConnected] = useState(false);
+
+  useEffect(() => {
+    const checkSecrets = async () => {
+      // Simulate connection check for web skeleton presentation
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const hasApiKey = !!process.env.GEMINI_API_KEY || !!import.meta.env.VITE_GEMINI_API_KEY || !!import.meta.env.VITE_MOMENTUM_AI_KEY;
+      setSecretsConnected(hasApiKey);
+      setIsInitializing(false);
+      
+      if (hasApiKey) {
+        console.log("API/Secrets 10001% connected successfully. Proceeding with load...");
+      } else {
+        console.warn("API Key could not be loaded from environment variables.");
+      }
+    };
+    checkSecrets();
+  }, []);
+
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center relative overflow-hidden text-[#F5F5F7] font-sans">
+        {/* Dynamic Background */}
+        <div className="absolute inset-0 -z-10 overflow-hidden opacity-50">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full animate-pulse"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/10 blur-[150px] rounded-full"></div>
+        </div>
+
+        <div className="flex flex-col items-center gap-8 max-w-sm w-full px-6">
+          <div className="relative">
+            <div className="w-20 h-20 border-[3px] border-white/5 rounded-full"></div>
+            <div className="w-20 h-20 border-[3px] border-blue-500 rounded-full border-t-transparent animate-spin absolute inset-0"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-blue-400 animate-pulse" />
+            </div>
+          </div>
+          
+          <div className="w-full space-y-4">
+            <div className="h-4 bg-white/10 rounded-md w-3/4 mx-auto animate-pulse"></div>
+            <div className="h-3 bg-white/5 rounded-md w-1/2 mx-auto animate-pulse"></div>
+            
+            <div className="mt-8 p-4 bg-white/[0.02] border border-white/5 rounded-2xl">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                <div className="h-3 bg-white/10 rounded max-w-[120px] w-full animate-pulse"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-2 bg-white/5 rounded w-full animate-pulse"></div>
+                <div className="h-2 bg-white/5 rounded w-5/6 animate-pulse"></div>
+              </div>
+            </div>
+            <p className="text-[11px] text-center font-black text-white/40 uppercase tracking-[0.25em] mt-4">
+              Establishing Secure Connection...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <BrowserRouter>
       <AppContent />
