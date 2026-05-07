@@ -26,7 +26,7 @@ function getTransporter() {
 export async function sendWelcomeEmail(customerEmail: string, customerName: string, customContent?: string, customSubject?: string) {
   const mailer = getTransporter();
   
-  const trackerUrl = process.env.TRACKER_URL || process.env.APP_URL || "https://tracker-momentum.netlify.app";
+  const trackerUrl = process.env.TRACKER_URL || process.env.APP_URL || "https://momentum-tracker.onrender.com";
   const senderName = "Momentum Tracker";
 
   // Use custom content if provided, otherwise use default welcome message

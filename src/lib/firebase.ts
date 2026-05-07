@@ -9,29 +9,27 @@ setLogLevel('error');
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-// Use initializeFirestore with long polling to avoid WebSocket issues in restricted environments
-export const db = initializeFirestore(app, {
-  experimentalForceLongPolling: true,
-}, firebaseConfig.firestoreDatabaseId);
+
+// Initialize Firestore with the specific database ID from config
+// We use getFirestore for the simplest reliable connection
+export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
 export const googleProvider = new GoogleAuthProvider();
 
 // Connection Test
 async function testConnection() {
   try {
-    console.log("Testing Firestore connection...");
+    console.log("Testing Firestore connection to database:", firebaseConfig.firestoreDatabaseId);
     // Just try to get a document, even if it doesn't exist
     await getDocFromServer(doc(db, 'subscribers', 'test_connection'));
     console.log("Firestore connection verified.");
   } catch (error: any) {
-    // Permission denied is actually a good sign - it means we reached the server
+    // Permission denied is actually a good sign - it means we reached the server but the rules blocked us
     if (error.code === 'permission-denied') {
       console.log("Firestore connection verified (Permission denied as expected).");
       return;
     }
     console.error("Firestore Connection Test Error:", error.code, error.message);
-    if (error.message?.includes('offline') || error.code === 'unavailable') {
-      console.error("CRITICAL: Firestore is offline. This usually means the configuration in firebase-applet-config.json is incorrect or the database is not provisioned.");
-    }
   }
 }
 testConnection();
