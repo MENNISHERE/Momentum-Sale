@@ -63,7 +63,7 @@ export default function Home({ openCheckout, triggerNotification, weeklyScore, h
           transition={{ duration: 0.6, delay: 0.3 }}
           className="max-w-xl text-base text-[#86868B] leading-relaxed mb-8 font-light"
         >
-          Momentum brings a premium, Mac-inspired elegance to your daily productivity on any device. 
+          Kanon brings a premium, Mac-inspired elegance to your daily productivity on any device. 
           AI-powered insights wrapped in a stunning, high-performance interface.
         </motion.p>
 
@@ -146,7 +146,7 @@ export default function Home({ openCheckout, triggerNotification, weeklyScore, h
                     </div>
                     <div>
                       <h2 className="text-lg font-black tracking-tight text-white font-display flex items-baseline gap-1">
-                        Momentum
+                        Kanon
                         <span className="text-blue-500 text-2xl leading-none">.</span>
                       </h2>
                       <div className="flex items-center gap-2 text-[#86868B] text-[11px] font-medium">
@@ -158,7 +158,7 @@ export default function Home({ openCheckout, triggerNotification, weeklyScore, h
 
                   <div className="flex items-center gap-2">
                     <button 
-                      onClick={() => triggerNotification('Premium Feature', 'Custom habit creation is available in the full version of Momentum.')}
+                      onClick={() => triggerNotification('Premium Feature', 'Custom habit creation is available in the full version of Kanon.')}
                       className="flex items-center gap-1 px-2 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-[10px] font-bold text-white transition-all"
                     >
                       <Plus className="w-2.5 h-2.5 text-blue-400" />
@@ -186,13 +186,13 @@ export default function Home({ openCheckout, triggerNotification, weeklyScore, h
                     { label: 'WEEKLY SCORE', value: `${weeklyScore} / 100`, icon: <Target className="w-4 h-4 text-yellow-500" />, bg: 'bg-yellow-500/10' },
                     { label: 'FOCUS SESSIONS', value: '0', icon: <Timer className="w-4 h-4 text-blue-400" />, bg: 'bg-blue-400/10' },
                     { label: 'OVERALL PROGRESS', value: `${weeklyScore}%`, icon: <Zap className="w-4 h-4 text-purple-400" />, bg: 'bg-purple-400/10' },
-                    { label: 'MOMENTUM SCORE', value: weeklyScore.toString(), icon: null, bg: null, isMomentum: true },
+                    { label: 'KANON SCORE', value: weeklyScore.toString(), icon: null, bg: null, isKanon: true },
                   ].map((stat, i) => (
                     <div key={i} className="bg-[#141414] border border-white/5 rounded-xl p-3.5 flex items-center justify-between">
                       <div>
                         <div className="text-[10px] font-bold text-[#86868B] tracking-widest mb-1 uppercase">{stat.label}</div>
                         <div className="text-lg font-black text-white font-display">{stat.value}</div>
-                        {stat.isMomentum && (
+                        {stat.isKanon && (
                           <div className="mt-2 w-14 h-1 bg-white/5 rounded-full overflow-hidden">
                             <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${weeklyScore}%` }}></div>
                           </div>
@@ -359,7 +359,7 @@ export default function Home({ openCheckout, triggerNotification, weeklyScore, h
         </motion.div>
       </section>
 
-      {/* Why Momentum? */}
+      {/* Why Kanon? */}
       <section className="px-6 py-16 md:py-40 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
           <div className="relative">
@@ -386,7 +386,7 @@ export default function Home({ openCheckout, triggerNotification, weeklyScore, h
           <div>
             <h2 className="text-2xl md:text-6xl font-black tracking-tight mb-4 md:mb-8 font-display text-white">Science-backed <br /><span className="text-[#86868B]">productivity.</span></h2>
             <p className="text-sm md:text-lg text-[#86868B] leading-relaxed font-light mb-6 md:mb-10">
-              Momentum isn't just a pretty interface. It's built on the principles of atomic habits and cognitive behavioral science.
+              Kanon isn't just a pretty interface. It's built on the principles of atomic habits and cognitive behavioral science.
             </p>
             <div className="grid grid-cols-2 gap-3 md:gap-6">
               <div className="p-3 md:p-6 rounded-xl md:rounded-2xl bg-white/5 border border-white/10">
@@ -424,7 +424,7 @@ export default function Home({ openCheckout, triggerNotification, weeklyScore, h
           </motion.div>
           
           <h2 className="text-2xl md:text-6xl font-black tracking-tight mb-4 md:mb-6 font-display text-white">
-            Join the <span className="text-blue-500">Momentum</span> <br />Inner Circle.
+            Join the <span className="text-blue-500">Kanon</span> <br />Inner Circle.
           </h2>
           <p className="text-sm md:text-lg text-[#86868B] leading-relaxed font-light mb-8 md:mb-12 max-w-2xl mx-auto">
             Get exclusive performance strategies, early access to new features, and high-performance insights delivered straight to your inbox.

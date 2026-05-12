@@ -5,11 +5,11 @@ let transporter: nodemailer.Transporter | null = null;
 
 function getTransporter() {
   if (!transporter) {
-    const user = process.env.GMAIL_USER;
+    const user = process.env.SENDER_EMAIL || process.env.GMAIL_USER;
     const pass = process.env.GMAIL_APP_PASSWORD;
 
     if (!user || !pass) {
-      throw new Error('GMAIL_USER or GMAIL_APP_PASSWORD is missing in environment variables');
+      throw new Error('SENDER_EMAIL/GMAIL_USER or GMAIL_APP_PASSWORD is missing in environment variables');
     }
 
     transporter = nodemailer.createTransport({
@@ -26,14 +26,14 @@ function getTransporter() {
 export async function sendWelcomeEmail(customerEmail: string, customerName: string, customContent?: string, customSubject?: string) {
   const mailer = getTransporter();
   
-  const trackerUrl = process.env.TRACKER_URL || process.env.APP_URL || "https://momentum-tracker.onrender.com";
-  const senderName = "Momentum Tracker";
+  const trackerUrl = process.env.TRACKER_URL || process.env.APP_URL || "https://kanon-tracker.onrender.com";
+  const senderName = "Kanon Tracker";
 
   // Use custom content if provided, otherwise use default welcome message
   const mainContent = customContent || `
-    <p>You've successfully joined the <strong>Momentum Inner Circle</strong>.</p>
+    <p>You've successfully joined the <strong>Kanon Inner Circle</strong>.</p>
     <p>From now on, you'll be the first to know whenever we release new features, performance updates, or high-performance systems for the tracker.</p>
-    <p>Stay focused. Stay consistent. Build your momentum.</p>
+    <p>Stay focused. Stay consistent. Build your kanon.</p>
   `;
 
   const htmlContent = `
@@ -42,7 +42,7 @@ export async function sendWelcomeEmail(customerEmail: string, customerName: stri
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Welcome to Momentum</title>
+      <title>Welcome to Kanon</title>
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">
@@ -201,7 +201,7 @@ export async function sendWelcomeEmail(customerEmail: string, customerName: stri
       <div class="wrapper">
         <div class="container">
           <div class="header">
-            <div class="logo"><span class="logo-text">MOMENTUM <span style="color: #4F46E5;">.</span></span></div>
+            <div class="logo"><span class="logo-text">KANON <span style="color: #4F46E5;">.</span></span></div>
           </div>
           <div class="content">
             <h1>Welcome to the Inner Circle, ${customerName}.</h1>
@@ -210,7 +210,7 @@ export async function sendWelcomeEmail(customerEmail: string, customerName: stri
             <div class="highlight-box">
               <div class="highlight-title">Stay Updated</div>
               <p class="highlight-text">
-                You will receive a notification at <strong>${customerEmail}</strong> whenever a new update is deployed to the Momentum Tracker.
+                You will receive a notification at <strong>${customerEmail}</strong> whenever a new update is deployed to the Kanon Tracker.
               </p>
             </div>
 
@@ -223,7 +223,7 @@ export async function sendWelcomeEmail(customerEmail: string, customerName: stri
             </p>
           </div>
           <div class="footer">
-            <p class="footer-text">© ${new Date().getFullYear()} Momentum Performance Systems. All rights reserved.</p>
+            <p class="footer-text">© ${new Date().getFullYear()} Kanon Performance Systems. All rights reserved.</p>
             <div class="social-links">
               <a href="${trackerUrl}/dashboard" class="social-link">DASHBOARD</a>
               <a href="${trackerUrl}/support" class="social-link">SUPPORT</a>
@@ -238,9 +238,9 @@ export async function sendWelcomeEmail(customerEmail: string, customerName: stri
 
   try {
     const info = await mailer.sendMail({
-      from: `"${senderName}" <${process.env.GMAIL_USER}>`,
+      from: `"${senderName}" <${process.env.SENDER_EMAIL || process.env.GMAIL_USER}>`,
       to: customerEmail,
-      subject: customSubject || "Welcome to the Momentum Inner Circle",
+      subject: customSubject || "Welcome to the Kanon Inner Circle",
       html: htmlContent,
     });
     

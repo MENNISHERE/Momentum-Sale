@@ -28,15 +28,15 @@ export default function Support({ openCheckout }: SupportProps) {
               icon: <Mail className="w-6 h-6 text-blue-400" />, 
               title: 'Email Support', 
               desc: 'Get a response within 24 hours.',
-              action: 'support@momentum.com',
-              link: 'mailto:support@momentum.com'
+              action: 'support@kanon.com',
+              link: 'mailto:support@kanon.com'
             },
             { 
               icon: <MessageSquare className="w-6 h-6 text-purple-400" />, 
               title: 'Community', 
               desc: 'Join our Discord for instant help.',
               action: 'Join Discord',
-              link: 'https://discord.gg/momentum'
+              link: 'https://discord.gg/kanon'
             },
             { 
               icon: <Globe className="w-6 h-6 text-emerald-400" />, 
@@ -103,7 +103,7 @@ export default function Support({ openCheckout }: SupportProps) {
               onClick={openCheckout}
               className="px-10 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white rounded-xl font-black text-sm tracking-tight hover:scale-105 transition-all shadow-xl shadow-blue-500/20 font-display uppercase"
             >
-              Buy Momentum — $25
+              Buy Kanon — $25
             </button>
             <p className="mt-4 text-[10px] text-[#86868B] font-medium uppercase tracking-widest">
               One-time purchase · Lifetime access

@@ -24,7 +24,7 @@ export default function Footer({ triggerNotification }: FooterProps) {
             </div>
           </div>
           <span className="uppercase tracking-widest text-lg flex items-baseline gap-1">
-            Momentum
+            Kanon
             <span className="text-blue-500 text-2xl leading-none">.</span>
           </span>
         </Link>
@@ -34,11 +34,11 @@ export default function Footer({ triggerNotification }: FooterProps) {
         <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
         <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
         <Link to="/support" className="hover:text-white transition-colors">Support</Link>
-        <a href="/assets/logo.svg" download="momentum_logo.svg" className="hover:text-white transition-colors">Assets</a>
+        <a href="/assets/logo.svg" download="kanon_logo.svg" className="hover:text-white transition-colors">Assets</a>
       </div>
 
       <div className="text-[11px] text-[#86868B] font-medium uppercase tracking-widest">
-        © 2026 Momentum Inc.
+        © 2026 Kanon Inc.
       </div>
     </footer>
   );

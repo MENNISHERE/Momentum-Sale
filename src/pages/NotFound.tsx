@@ -43,7 +43,7 @@ const NotFound = () => {
             Lost in <span className="text-indigo-500">Space</span>
           </h1>
           <p className="text-[#86868B] text-lg md:text-xl font-medium tracking-tight mb-12 max-w-lg mx-auto leading-relaxed">
-            The path you followed lead to a void. Let's redirect your momentum back to where it matters.
+            The path you followed lead to a void. Let's redirect your kanon back to where it matters.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -83,7 +83,7 @@ const NotFound = () => {
         <div className="flex items-center gap-4">
           <div className="h-[1px] w-12 bg-white/10" />
           <span className="text-[10px] font-black text-white/20 uppercase tracking-[1em] flex items-baseline translate-x-[0.5em]">
-            Momentum
+            Kanon
             <span className="text-blue-500 text-lg ml-1">.</span>
           </span>
           <div className="h-[1px] w-12 bg-white/10" />

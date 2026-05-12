@@ -7,8 +7,8 @@ interface FAQProps {
 }
 
 const faqs = [
-  { q: 'Is it really a one-time payment?', a: 'Yes. We believe in tools, not subscriptions. You pay once and own the current version of Momentum forever, including all minor updates.' },
-  { q: 'Does it work on Windows and Android?', a: 'Absolutely. While the design is inspired by macOS, Momentum is a high-performance web application that works perfectly on any modern browser and device.' },
+  { q: 'Is it really a one-time payment?', a: 'Yes. We believe in tools, not subscriptions. You pay once and own the current version of Kanon forever, including all minor updates.' },
+  { q: 'Does it work on Windows and Android?', a: 'Absolutely. While the design is inspired by macOS, Kanon is a high-performance web application that works perfectly on any modern browser and device.' },
   { q: 'How secure is my data?', a: 'Your privacy is our priority. All habit data is encrypted, and we never sell your personal information to third parties.' },
   { q: 'Can I export my data?', a: 'Yes, you can export your entire habit history and task data as a CSV or JSON file at any time from the settings menu.' }
 ];
@@ -51,7 +51,8 @@ export default function FAQ({ openCheckout }: FAQProps) {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                  transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+                  className="overflow-hidden"
                 >
                   <div className="px-6 pb-6 text-[#86868B] font-light leading-relaxed">
                     {item.a}
@@ -74,7 +75,7 @@ export default function FAQ({ openCheckout }: FAQProps) {
             onClick={openCheckout}
             className="px-10 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white rounded-xl font-black text-sm tracking-tight hover:scale-105 transition-all shadow-xl shadow-blue-500/20 font-display uppercase"
           >
-            Buy Momentum — $25
+            Buy Kanon — $25
           </button>
           <p className="mt-4 text-[10px] text-[#86868B] font-medium uppercase tracking-widest">
             One-time purchase · Lifetime access

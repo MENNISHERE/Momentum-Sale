@@ -37,7 +37,7 @@ export default function Features({ openCheckout }: FeaturesProps) {
           transition={{ delay: 0.1 }}
           className="text-[#86868B] max-w-2xl mx-auto font-light"
         >
-          Every feature in Momentum is designed to reduce friction and increase your daily output.
+          Every feature in Kanon is designed to reduce friction and increase your daily output.
         </motion.p>
       </div>
       <motion.div 
@@ -48,9 +48,9 @@ export default function Features({ openCheckout }: FeaturesProps) {
       >
         {[
           { icon: <Layout />, title: 'Habit Matrix', desc: 'A visual weekly grid tracking non-negotiables with consistency streaks and multi-state tracking (Completed, Skipped, Pending).', color: 'text-blue-400' },
-          { icon: <Bot />, title: 'AI Momentum Coach', desc: 'Powered by Gemini 3 Flash. Hyper-personalized coaching that analyzes your habits, tasks, and mental state.', color: 'text-purple-400' },
-          { icon: <Zap />, title: 'Momentum Scoring', desc: 'A real-time 0-100 score weighting habits (50%), tasks (30%), and focus (20%) for a single North Star metric.', color: 'text-yellow-400' },
-          { icon: <Timer />, title: 'Deep Work Timer', desc: 'Integrated Pomodoro-style timer (25/5/15) that directly contributes to your overall Momentum Score.', color: 'text-rose-400' },
+          { icon: <Bot />, title: 'AI Kanon Coach', desc: 'Powered by Gemini 3 Flash. Hyper-personalized coaching that analyzes your habits, tasks, and mental state.', color: 'text-purple-400' },
+          { icon: <Zap />, title: 'Kanon Scoring', desc: 'A real-time 0-100 score weighting habits (50%), tasks (30%), and focus (20%) for a single North Star metric.', color: 'text-yellow-400' },
+          { icon: <Timer />, title: 'Deep Work Timer', desc: 'Integrated Pomodoro-style timer (25/5/15) that directly contributes to your overall Kanon Score.', color: 'text-rose-400' },
           { icon: <BarChart3 />, title: 'Advanced Analytics', desc: 'Recharts-powered visualizations showing performance trends and identifying your most productive days.', color: 'text-emerald-400' },
           { icon: <Monitor />, title: 'Multi-Mode Layouts', desc: 'Switch between Standard, Focus, Habit-Centric, and Analytics modes to suit your current workflow.', color: 'text-indigo-400' },
         ].map((f, i) => (
@@ -80,7 +80,7 @@ export default function Features({ openCheckout }: FeaturesProps) {
             onClick={openCheckout}
             className="px-12 py-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white rounded-2xl font-black text-lg tracking-tight hover:scale-105 transition-all shadow-2xl shadow-blue-500/20 font-display uppercase"
           >
-            Buy Momentum — $25
+            Buy Kanon — $25
           </button>
           <p className="mt-6 text-xs text-[#86868B] font-light">
             One-time purchase. No subscriptions.

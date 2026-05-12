@@ -25,7 +25,7 @@ export default function Header({ openCheckout }: HeaderProps) {
             whileHover={{ scale: 1.1, rotate: 5 }}
             className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center shadow-xl shadow-indigo-500/30 relative overflow-hidden"
           >
-            {/* Unique "Momentum Hex" Mark */}
+            {/* Unique "Kanon Hex" Mark */}
             <div className="relative w-6 h-6 flex items-center justify-center">
               {/* Left Half Hex */}
               <div 
@@ -41,7 +41,7 @@ export default function Header({ openCheckout }: HeaderProps) {
             <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
           </motion.div>
           <span className="text-base md:text-lg font-black tracking-tight text-white font-display uppercase tracking-widest flex items-baseline gap-1">
-            Momentum
+            Kanon
             <span className="text-blue-500 text-2xl md:text-3xl leading-none select-none">.</span>
           </span>
         </Link>

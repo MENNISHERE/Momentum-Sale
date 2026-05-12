@@ -5,7 +5,7 @@ export const generateEmailTemplate = (customerName: string, content?: string) =>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Momentum Update</title>
+  <title>Kanon Update</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">
@@ -25,16 +25,16 @@ export const generateEmailTemplate = (customerName: string, content?: string) =>
   <div class="wrapper">
     <div class="container">
       <div class="header">
-        <div class="logo">MOMENTUM <span style="color: #4F46E5; font-size: 1.2em;">.</span></div>
+        <div class="logo">KANON <span style="color: #4F46E5; font-size: 1.2em;">.</span></div>
       </div>
       <div class="content">
         <h1 style="color: #FFFFFF; font-size: 24px; margin-bottom: 20px;">Hello, ${customerName}</h1>
         <p style="color: #FFFFFF;">
-          ${content || "whenever is there is any update in momentum u will get it thanks for joining inner circle"}
+          ${content || "whenever is there is any update in kanon u will get it thanks for joining inner circle"}
         </p>
       </div>
       <div class="footer">
-        <p class="footer-text">© 2026 Momentum Performance Systems. All rights reserved.</p>
+        <p class="footer-text">© 2026 Kanon Performance Systems. All rights reserved.</p>
       </div>
     </div>
   </div>

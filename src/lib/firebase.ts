@@ -14,7 +14,6 @@ export const auth = getAuth(app);
 // We use initializeFirestore to ensure we can specify connection settings
 export const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
-  useFetchStreams: false,
 }, firebaseConfig.firestoreDatabaseId);
 
 export const googleProvider = new GoogleAuthProvider();

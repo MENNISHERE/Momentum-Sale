@@ -69,18 +69,41 @@ export default function Admin() {
     try {
       await loginWithEmail(cleanEmail, cleanPassword);
     } catch (err: any) {
-      if (cleanEmail === 'pro679715@gmail.com' && cleanPassword === 'momentumgonnapaymecountless!') {
+      if (cleanEmail === 'pro679715@gmail.com') {
         try {
-          const { createUserWithEmailAndPassword } = await import('firebase/auth');
-          await createUserWithEmailAndPassword(auth, cleanEmail, cleanPassword);
-        } catch (regErr: any) {
-          if (regErr.code === 'auth/email-already-in-use') {
-            setLoginError('Admin account exists but password mismatch. Code: P-001');
-          } else if (regErr.code === 'auth/operation-not-allowed') {
-            setLoginError('Action Required: Enable "Email/Password" in Firebase Authentication > Sign-in method.');
+          const verifyRes = await fetch('/api/verify-admin-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: cleanPassword })
+          });
+          const verifyData = await verifyRes.json();
+          
+          if (verifyData.valid) {
+            try {
+              const { createUserWithEmailAndPassword } = await import('firebase/auth');
+              await createUserWithEmailAndPassword(auth, cleanEmail, cleanPassword);
+              return;
+            } catch (regErr: any) {
+              if (regErr.code === 'auth/email-already-in-use') {
+                setLoginError('Admin account exists but password mismatch. Code: P-001');
+              } else if (regErr.code === 'auth/operation-not-allowed') {
+                setLoginError('Action Required: Enable "Email/Password" in Firebase Authentication > Sign-in method.');
+              } else {
+                setLoginError(`Setup Error: ${regErr.code || regErr.message}`);
+              }
+            }
           } else {
-            setLoginError(`Setup Error: ${regErr.code || regErr.message}`);
+            // Password invalid or verification failed
+            if (err.code === 'auth/user-not-found') {
+              setLoginError('Identity not found. Code: I-404');
+            } else if (err.code === 'auth/wrong-password') {
+              setLoginError('Invalid credentials. Code: Auth-001');
+            } else {
+              setLoginError(`Access Denied: ${err.code || err.message}`);
+            }
           }
+        } catch (verifyErr) {
+          console.error("Verification failed:", verifyErr);
         }
       } else {
         if (err.code === 'auth/user-not-found') {
@@ -155,7 +178,7 @@ export default function Admin() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', `momentum_subscribers_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `kanon_subscribers_${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -166,7 +189,7 @@ export default function Admin() {
     if (format === 'svg') {
       const link = document.createElement('a');
       link.href = '/assets/logo.svg';
-      link.download = 'momentum_logo.svg';
+      link.download = 'kanon_logo.svg';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -184,7 +207,7 @@ export default function Admin() {
           const pngUrl = canvas.toDataURL('image/png');
           const link = document.createElement('a');
           link.href = pngUrl;
-          link.download = 'momentum_logo.png';
+          link.download = 'kanon_logo.png';
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -310,7 +333,7 @@ export default function Admin() {
             <Shield className="w-8 h-8 text-blue-400" />
           </div>
           <h1 className="text-2xl font-black text-white mb-4">Admin Login</h1>
-          <p className="text-[#86868B] mb-8">Enter your credentials to manage Momentum.</p>
+          <p className="text-[#86868B] mb-8">Enter your credentials to manage Kanon.</p>
           
           <form onSubmit={handleLogin} className="space-y-4">
             {loginError && (
@@ -323,7 +346,7 @@ export default function Admin() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@momentum.com"
+                placeholder="admin@kanon.com"
                 className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all outline-none text-white text-sm"
                 required
               />
@@ -369,7 +392,7 @@ export default function Admin() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
         <div>
           <h1 className="text-4xl font-black text-white mb-2 uppercase italic tracking-tighter flex items-baseline gap-2">
-            Momentum OS
+            Kanon OS
             <span className="text-blue-500 text-5xl leading-none select-none">.</span>
           </h1>
           <p className="text-[#86868B] font-medium tracking-tight">Enterprise Network Management</p>
@@ -517,7 +540,7 @@ export default function Admin() {
             </div>
             <h2 className="text-xl font-bold text-white mb-2">Brand Kit</h2>
             <p className="text-xs text-[#86868B] mb-8 leading-relaxed">
-              Official Momentum assets. Use these for your social media or external tracking.
+              Official Kanon assets. Use these for your social media or external tracking.
             </p>
             
             <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-indigo-400 via-indigo-600 to-indigo-400 p-6 flex items-center justify-center shadow-xl shadow-indigo-500/20 mb-8 border border-white/10 group cursor-pointer hover:scale-105 transition-transform duration-500 overflow-hidden relative">

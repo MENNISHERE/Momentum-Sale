@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: momentum-tracker
+    name: kanon-tracker
     env: node
     buildCommand: npm install && npm run build
     startCommand: npm run start

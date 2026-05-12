@@ -29,7 +29,7 @@ export default function Privacy() {
               Data Collection
             </h2>
             <p className="text-[#86868B] leading-relaxed font-light">
-              Momentum is designed with a "Local-First" architecture. This means your habit data, task lists, and focus session history are stored directly on your device. We do not collect, store, or have access to your personal productivity data on our servers.
+              Kanon is designed with a "Local-First" architecture. This means your habit data, task lists, and focus session history are stored directly on your device. We do not collect, store, or have access to your personal productivity data on our servers.
             </p>
           </section>
 

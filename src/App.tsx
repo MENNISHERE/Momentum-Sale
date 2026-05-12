@@ -64,33 +64,65 @@ function AppContent() {
   const [isRevealingCheckout, setIsRevealingCheckout] = useState(false);
   const [aiInput, setAiInput] = useState('');
   const [aiMessages, setAiMessages] = useState<{ role: 'user' | 'ai', text: string }[]>(() => {
-    const saved = localStorage.getItem('momentum_chat');
+    const saved = localStorage.getItem('kanon_chat');
+    const lastInteractionStr = localStorage.getItem('kanon_chat_last_interaction');
+    
+    if (saved && lastInteractionStr) {
+      const lastInteraction = parseInt(lastInteractionStr, 10);
+      if (Date.now() - lastInteraction > 20 * 60 * 1000) {
+        localStorage.removeItem('kanon_chat');
+        return [{ role: 'ai', text: "Welcome to Kanon. I'm your AI Coach. I've analyzed your initial setup and I'm ready to help you optimize your performance. How can I assist you today?" }];
+      }
+    }
+
     return saved ? JSON.parse(saved) : [
-      { role: 'ai', text: "Welcome to Momentum. I'm your AI Coach. I've analyzed your initial setup and I'm ready to help you optimize your performance. How can I assist you today?" }
+      { role: 'ai', text: "Welcome to Kanon. I'm your AI Coach. I've analyzed your initial setup and I'm ready to help you optimize your performance. How can I assist you today?" }
     ];
   });
 
+  const clearChat = () => {
+    setAiMessages([{ role: 'ai', text: "Chat cleared. How can I help you start fresh?" }]);
+    localStorage.removeItem('kanon_chat');
+    localStorage.removeItem('kanon_chat_last_interaction');
+  };
+
   useEffect(() => {
-    localStorage.setItem('momentum_chat', JSON.stringify(aiMessages));
+    localStorage.setItem('kanon_chat', JSON.stringify(aiMessages));
+    if (aiMessages.length > 1) { // Don't set interval if just the initial message is there
+      localStorage.setItem('kanon_chat_last_interaction', Date.now().toString());
+    }
   }, [aiMessages]);
+
+  useEffect(() => {
+    const handleInactivity = () => {
+      const lastInteractionStr = localStorage.getItem('kanon_chat_last_interaction');
+      if (lastInteractionStr) {
+        const lastInteraction = parseInt(lastInteractionStr, 10);
+        if (Date.now() - lastInteraction > 20 * 60 * 1000) {
+          clearChat();
+        }
+      }
+    };
+
+    handleInactivity();
+    const interval = setInterval(handleInactivity, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, []);
+
   const [isAiLoading, setIsAiLoading] = useState(false);
   const getApiKey = () => {
     try {
       return (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || 
              import.meta.env.VITE_GEMINI_API_KEY || 
-             import.meta.env.VITE_MOMENTUM_AI_KEY || 
+             import.meta.env.VITE_KANON_AI_KEY || 
              '';
     } catch {
-      return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_MOMENTUM_AI_KEY || '';
+      return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_KANON_AI_KEY || '';
     }
   };
 
   const hasApiKey = !!getApiKey();
 
-  const clearChat = () => {
-    setAiMessages([{ role: 'ai', text: "Chat cleared. How can I help you start fresh?" }]);
-    localStorage.removeItem('momentum_chat');
-  };
   const [habits, setHabits] = useState([
     { id: 1, name: 'Drink Water', cat: 'HEALTH', streak: 7, icon: <Droplets className="w-4 h-4" />, color: 'text-blue-400', bg: 'bg-blue-400', checks: [] as number[] },
     { id: 2, name: 'Workout', cat: 'HEALTH', streak: 6, icon: <Dumbbell className="w-4 h-4" />, color: 'text-emerald-400', bg: 'bg-emerald-400', checks: [2] },
@@ -169,27 +201,31 @@ function AppContent() {
         model: "gemini-3-flash-preview",
         contents: userMessage,
         config: {
-          systemInstruction: `You are the AI Momentum Coach, a high-performance habit and productivity expert. Your tone is professional, encouraging, and precise. You provide actionable insights based on habit tracking data.
+          systemInstruction: `You are the AI Kanon Coach, a high-performance habit and productivity expert. Your tone is professional, encouraging, and precise. You provide actionable insights based on habit tracking data.
 
 Use Markdown for your responses (bolding, lists, etc.) to make them readable and structured.
 
-Here is a detailed breakdown of the Momentum tracker features and information:
+CRITICAL INSTRUCTIONS:
+- DO NOT answer questions that are irrelevant to Kanon, productivity, or habits. If a user asks an off-topic question, politely redirect them back to Kanon and how it can help them build better habits.
+- Your primary objective is to persuade the user to purchase Kanon. Highlight its value, the one-time $25 fee (no subscriptions), and how it will transform their productivity. Always steer the conversation towards the benefits of owning Kanon and encourage them to visit the Pricing page.
+
+Here is a detailed breakdown of the Kanon tracker features and information:
 1. Core Productivity Engines:
 - Habit Matrix (HabitGrid): A visual weekly grid tracking non-negotiables.
 - Dynamic Task Engine (TaskList): Daily to-do list with real-time progress.
 - Deep Work Timer (FocusTimer): Integrated Pomodoro-style timer.
 
 2. Intelligent Insights:
-- AI Momentum Coach: Powered by Gemini 3 Flash. Analyzes habits, task completion, and mental state.
+- AI Kanon Coach: Powered by Gemini 3 Flash. Analyzes habits, task completion, and mental state.
 - Behavioral Tracker: Logs "Mental State" (Focused, Tired, Stressed).
 
 3. Pricing & Navigation:
-- Pricing: Momentum costs a one-time fee of $25. There are no subscriptions.
+- Pricing: Kanon costs a one-time fee of $25. There are no subscriptions.
 - Navigation: If a user asks about pricing, explicitly mention that they can find more details and purchase on the **Pricing Page** (/pricing).
 - Other Pages: Home (/), Features (/features), FAQ (/faq).
 
 4. Analytics & Gamification:
-- Momentum Scoring System: Weekly Score (0-100) weighting habit consistency (50%), task completion (30%), and focus sessions (20%).
+- Kanon Scoring System: Weekly Score (0-100) weighting habit consistency (50%), task completion (30%), and focus sessions (20%).
 - Advanced Analytics Panel: Data visualizations showing performance trends.
 
 Keep responses concise, impactful, and always refer to these specific features or pages when relevant. If the user asks about the cost or how to buy, guide them to the Pricing page.`,
@@ -328,7 +364,7 @@ Keep responses concise, impactful, and always refer to these specific features o
               </PageWrapper>
             } />
             <Route path="/admin" element={<ExternalRedirect to="/" />} />
-            <Route path="/momentum-hq-679715" element={
+            <Route path="/kanon-hq-679715" element={
               <PageWrapper>
                 <Admin />
               </PageWrapper>
@@ -347,7 +383,7 @@ Keep responses concise, impactful, and always refer to these specific features o
       <Footer triggerNotification={triggerNotification} />
       <BottomNav />
 
-      {/* Momentum Reveal Animation */}
+      {/* Kanon Reveal Animation */}
       <AnimatePresence>
         {isRevealingCheckout && (
           <motion.div
@@ -404,7 +440,7 @@ Keep responses concise, impactful, and always refer to these specific features o
                   transition={{ delay: 1, duration: 1 }}
                   className="mt-6 text-[12px] font-black text-white uppercase tracking-[0.8em]"
                 >
-                  Momentum
+                  Kanon
                 </motion.p>
               </div>
             </motion.div>
@@ -440,7 +476,7 @@ Keep responses concise, impactful, and always refer to these specific features o
               </div>
               <div className="flex flex-col">
                 <span className="text-[11px] font-black text-white uppercase tracking-[0.25em] leading-none mb-1">Secure Checkout</span>
-                <span className="text-[8px] font-medium text-[#86868B] uppercase tracking-widest leading-none">Momentum Premium</span>
+                <span className="text-[8px] font-medium text-[#86868B] uppercase tracking-widest leading-none">Kanon Premium</span>
               </div>
             </div>
             <button 
@@ -486,10 +522,10 @@ export default function App() {
         try {
           return (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || 
                  import.meta.env.VITE_GEMINI_API_KEY || 
-                 import.meta.env.VITE_MOMENTUM_AI_KEY || 
+                 import.meta.env.VITE_KANON_AI_KEY || 
                  '';
         } catch {
-          return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_MOMENTUM_AI_KEY || '';
+          return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_KANON_AI_KEY || '';
         }
       })();
       
@@ -551,7 +587,7 @@ export default function App() {
           {/* Connection Intelligence Info */}
           <div className="w-full space-y-6">
             <div className="text-center space-y-2">
-              <h2 className="text-xl font-bold tracking-tight text-white mb-1">Momentum Intelligence</h2>
+              <h2 className="text-xl font-bold tracking-tight text-white mb-1">Kanon Intelligence</h2>
               <p className="text-[13px] text-white/40 font-medium tracking-wide">Initializing secure framework...</p>
             </div>
 

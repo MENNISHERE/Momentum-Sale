@@ -21,7 +21,7 @@ export default function Pricing({ openCheckout }: PricingProps) {
         
         <h2 className="text-4xl md:text-7xl font-black tracking-tight leading-none mb-8 font-display text-white">
           One price. <br className="hidden md:block" />
-          <span className="text-[#86868B]">Infinite momentum.</span>
+          <span className="text-[#86868B]">Infinite kanon.</span>
         </h2>
         
         <div className="flex flex-col items-center gap-8">

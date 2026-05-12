@@ -33,21 +33,21 @@ export default function Onboarding() {
     {
       id: 3,
       title: "Verification Protocol",
-      desc: "Open your Gmail or email app. Look for a message from 'Momentum' containing your unique verification code.",
+      desc: "Open your Gmail or email app. Look for a message from 'Kanon' containing your unique verification code.",
       icon: <ShieldCheck className="w-6 h-6 text-emerald-400" />,
       detail: "Check your spam or promotions folder if you don't see it within 60 seconds."
     },
     {
       id: 4,
       title: "Authenticate",
-      desc: "Return to the Momentum login screen and enter the 6-digit code to unlock your high-performance environment.",
+      desc: "Return to the Kanon login screen and enter the 6-digit code to unlock your high-performance environment.",
       icon: <Key className="w-6 h-6 text-orange-400" />,
       detail: "Your session is now secured and your data is ready to be initialized."
     },
     {
       id: 5,
       title: "Configure Your Matrix",
-      desc: "Add your first 5 'Non-Negotiable' habits. These are the foundation of your daily momentum.",
+      desc: "Add your first 5 'Non-Negotiable' habits. These are the foundation of your daily kanon.",
       icon: <LayoutGrid className="w-6 h-6 text-indigo-400" />,
       detail: "We recommend starting with simple wins: Hydration, Movement, and Deep Work."
     },
@@ -60,8 +60,8 @@ export default function Onboarding() {
     },
     {
       id: 7,
-      title: "Build Momentum",
-      desc: "Complete your first check-in. Watch your Momentum Score climb as you stack wins.",
+      title: "Build Kanon",
+      desc: "Complete your first check-in. Watch your Kanon Score climb as you stack wins.",
       icon: <Sparkles className="w-6 h-6 text-pink-400" />,
       detail: "Consistency is the only metric that matters. Welcome to the elite 1%."
     }
@@ -87,7 +87,7 @@ export default function Onboarding() {
             className="text-4xl md:text-6xl font-black tracking-tight text-white mb-6 font-display"
           >
             How to Access <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">Your Momentum.</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">Your Kanon.</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

@@ -101,10 +101,10 @@ app.post("/api/auto-subscribe", async (req, res) => {
 
   try {
     const updateContent = `
-      <p>It's a privilege to welcome you to the <strong>Momentum Inner Circle</strong>.</p>
-      <p>You've joined an elite group dedicated to mastering their habits. From now on, you will be the first to know whenever we release new features, performance updates, or high-performance systems for the Momentum Tracker.</p>
+      <p>It's a privilege to welcome you to the <strong>Kanon Inner Circle</strong>.</p>
+      <p>You've joined an elite group dedicated to mastering their habits. From now on, you will be the first to know whenever we release new features, performance updates, or high-performance systems for the Kanon Tracker.</p>
       <p>We'll keep you informed so you can stay at the top of your game.</p>
-      <p>Stay focused. Stay consistent. Build your momentum.</p>
+      <p>Stay focused. Stay consistent. Build your kanon.</p>
     `;
 
     const success = await sendWelcomeEmail(email, name, updateContent, "Welcome to the Inner Circle - Stay Updated");
@@ -152,15 +152,27 @@ app.post("/api/webhook/whop", async (req, res) => {
       try {
         const purchaseContent = `
           <p>Your payment was successful. Your commitment to excellence has been recognized.</p>
-          <p>We've initialized your high-performance environment and unlocked full access to the Momentum Tracker.</p>
+          <p>We've initialized your high-performance environment and unlocked full access to the Kanon Tracker.</p>
           <p>To ensure data integrity, please authenticate using the exact same email associated with your payment: <strong>${customerEmail}</strong></p>
         `;
-        await sendWelcomeEmail(customerEmail, customerName, purchaseContent, "Your Momentum Tracker Access is Ready!");
+        await sendWelcomeEmail(customerEmail, customerName, purchaseContent, "Your Kanon Tracker Access is Ready!");
         console.log(`Welcome email sent to ${customerEmail} via Nodemailer`);
       } catch (error) {
         console.error("Error processing email in webhook:", error);
       }
     }
+  }
+});
+
+// 6. Verify Admin Password (for fallback account creation)
+app.post("/api/verify-admin-password", (req, res) => {
+  const { password } = req.body;
+  const adminSecret = process.env.pasword_restricted_area || "kanongonnapaymecountless!";
+  
+  if (password === adminSecret) {
+    res.json({ valid: true });
+  } else {
+    res.json({ valid: false });
   }
 });
 

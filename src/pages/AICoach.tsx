@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Bot, Check, Send } from 'lucide-react';
-import { FormEvent, RefObject } from 'react';
+import { FormEvent, RefObject, useRef, useEffect } from 'react';
 
 import Markdown from 'react-markdown';
 
@@ -16,6 +16,17 @@ interface AICoachProps {
 }
 
 export default function AICoach({ aiMessages, isAiLoading, aiInput, setAiInput, handleAiSubmit, clearChat, hasApiKey, openCheckout }: AICoachProps) {
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [aiMessages, isAiLoading]);
+
   return (
     <section className="px-6 py-24 min-h-screen">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -43,11 +54,11 @@ export default function AICoach({ aiMessages, isAiLoading, aiInput, setAiInput, 
             <span className="text-[#86868B]">actually knows you.</span>
           </h2>
           <p className="text-lg text-[#86868B] leading-relaxed font-light mb-10">
-            Momentum's AI doesn't just give generic advice. It analyzes your actual habit data, focus sessions, and productivity patterns to provide hyper-personalized coaching that evolves as you do.
+            Kanon's AI doesn't just give generic advice. It analyzes your actual habit data, focus sessions, and productivity patterns to provide hyper-personalized coaching that evolves as you do.
           </p>
           <ul className="space-y-6 mb-12">
             {[
-              { title: 'Momentum Scoring', desc: 'Real-time 0-100 score weighting habits (50%), tasks (30%), and focus (20%).' },
+              { title: 'Kanon Scoring', desc: 'Real-time 0-100 score weighting habits (50%), tasks (30%), and focus (20%).' },
               { title: 'Behavioral Tracking', desc: 'Logs your mental state to adjust coaching based on your energy levels.' },
               { title: 'Intelligent Patterns', desc: 'Powered by Gemini 3 Flash to identify why you skip habits and suggest fixes.' }
             ].map((item, i) => (
@@ -80,7 +91,7 @@ export default function AICoach({ aiMessages, isAiLoading, aiInput, setAiInput, 
                 onClick={openCheckout}
                 className="px-8 py-4 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 text-white rounded-xl font-black text-sm tracking-tight hover:scale-105 transition-all shadow-xl shadow-purple-500/20 font-display uppercase"
               >
-                Buy Momentum — $25
+                Buy Kanon — $25
               </button>
               <p className="text-[10px] text-[#86868B] font-medium uppercase tracking-widest">
                 One-time purchase · Lifetime access
@@ -100,7 +111,7 @@ export default function AICoach({ aiMessages, isAiLoading, aiInput, setAiInput, 
               <Bot className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-bold text-white">Momentum AI Coach</h3>
+              <h3 className="text-sm font-bold text-white">Kanon AI Coach</h3>
               <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
                 Analyzing your patterns...
@@ -114,7 +125,7 @@ export default function AICoach({ aiMessages, isAiLoading, aiInput, setAiInput, 
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto space-y-4 mb-4 custom-scrollbar pr-2">
+          <div ref={chatContainerRef} className="flex-1 overflow-y-auto overscroll-contain space-y-4 mb-4 custom-scrollbar pr-2" data-lenis-prevent="true">
             {aiMessages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] p-4 rounded-2xl text-xs leading-relaxed markdown-body ${
